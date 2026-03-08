@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlanner.Domain", "src\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlanner.Infrastructure", "src\Server\TaskPlanner.Infrastructure\TaskPlanner.Infrastructure.csproj", "{B87B45FA-4382-4E30-BC5B-3A502E915B4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlanner.Application", "src\Server\TaskPlanner.Application\TaskPlanner.Application.csproj", "{BB3037D5-19C3-468F-ABB2-08408456C8D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,18 @@ Global
 		{B87B45FA-4382-4E30-BC5B-3A502E915B4B}.Release|x64.Build.0 = Release|Any CPU
 		{B87B45FA-4382-4E30-BC5B-3A502E915B4B}.Release|x86.ActiveCfg = Release|Any CPU
 		{B87B45FA-4382-4E30-BC5B-3A502E915B4B}.Release|x86.Build.0 = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|x64.Build.0 = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Debug|x86.Build.0 = Debug|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|x64.ActiveCfg = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|x64.Build.0 = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +141,7 @@ Global
 		{8217FA4A-0018-4C04-8AA4-7DCC0A61DF1B} = {0BA6E827-E447-46E2-ADFE-5ECFE44AD17F}
 		{FDF35A90-E645-42A5-9062-1DA0B9EC9166} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B87B45FA-4382-4E30-BC5B-3A502E915B4B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{BB3037D5-19C3-468F-ABB2-08408456C8D2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D6C0A58-F1EB-4898-8EB2-2C149C8C07D1}
