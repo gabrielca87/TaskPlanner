@@ -1,3 +1,6 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using TaskPlanner.Application.Validators.Users;
 using TaskPlanner.Infrastructure.Extensions;
 
 namespace TaskPlanner.Api;
@@ -11,6 +14,8 @@ public class Program
             ?? throw new InvalidOperationException("Connection string 'TaskPlannerDatabase' is missing.");
 
         builder.Services.AddControllers();
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
         builder.Services.AddOpenApi();
         builder.Services.AddInfrastructure(connectionString);
 
