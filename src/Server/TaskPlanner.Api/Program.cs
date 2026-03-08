@@ -1,32 +1,38 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using TaskPlanner.Api.Extensions;
+using TaskPlanner.Api.Middlewares;
+using TaskPlanner.Application.Mappings;
 using TaskPlanner.Application.Validators.Users;
-using TaskPlanner.Infrastructure.Extensions;
 
 namespace TaskPlanner.Api;
 
-public class Program
+public partial class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        var connectionString = builder.Configuration.GetConnectionString("TaskPlannerDatabase")
-            ?? throw new InvalidOperationException("Connection string 'TaskPlannerDatabase' is missing.");
 
         builder.Services.AddControllers();
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
-        builder.Services.AddOpenApi();
-        builder.Services.AddInfrastructure(connectionString);
+        builder.Services.AddAutoMapper(typeof(TaskItemProfile).Assembly);
+        builder.Services.AddSwagger();
+        builder.Services.AddJwtAuthentication(builder.Configuration);
+        builder.Services.AddDependencyInjection(builder.Configuration);
 
         var app = builder.Build();
+        await app.InitializeDatabaseAsync();
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.Run();

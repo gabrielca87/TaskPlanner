@@ -49,8 +49,8 @@ public class UserService : IUserService
         user.Id = Guid.NewGuid();
         user.CreatedAtUtc = utcNow;
         user.UpdatedAtUtc = utcNow;
-        user.CreatedBy = Guid.Empty; // TODO: Replace with actual user ID when authentication is implemented
-        user.UpdatedBy = Guid.Empty; // TODO: Replace with actual user ID when authentication is implemented
+        user.CreatedBy = Guid.Empty;
+        user.UpdatedBy = Guid.Empty;
         user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
 
         await _userRepository.AddAsync(user, cancellationToken);
