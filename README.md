@@ -4,6 +4,26 @@ A full-stack task management application built as a take-home interview exercise
 
 ---
 
+## User Story
+
+#### Title
+Users can register, authenticate, and manage their own task items
+
+#### Description
+As a user, I want to create an account, sign in securely, and manage my own task items so that I can use the application in a private and personalized way.
+
+#### Acceptance Criteria
+- A guest user can register a new account by providing valid required information.
+- A registered user can log in with valid credentials and receive an authentication token.
+- Protected endpoints reject requests from unauthenticated users.
+- An authenticated user can view only their own task items.
+- An authenticated user can create a new task item associated with their account.
+- An authenticated user can update their own task items.
+- An authenticated user can delete their own task items.
+- A user cannot access or modify task items that belong to another user.
+- Invalid input returns clear validation errors.
+- Unexpected errors are handled consistently by the API.
+---
 ## Tech Stack
 
 **Backend**
@@ -30,9 +50,9 @@ The backend is structured in four layers with strict dependency direction (outer
 | Layer | Responsibility |
 |---|---|
 | `TaskPlanner.Api` | Controllers, middleware, DI composition root |
-| `TaskPlanner.Application` | Services, DTOs, request/response models, validators, interfaces |
+| `TaskPlanner.Application` | Services, DTOs, request/response models, validators, interfaces (Business logic layer) |
 | `TaskPlanner.Domain` | Entities, domain interfaces |
-| `TaskPlanner.Infrastructure` | SQLite repositories, JWT token service, password hashing, DB initializer and seeder |
+| `TaskPlanner.Infrastructure` | SQLite repositories, JWT token service, password hashing, DB initializer and seeder (Data layer) |
 
 The database schema is created and seeded on startup through an initializer registered in the infrastructure layer. There is no migration tooling — schema scripts are managed in code.
 
@@ -58,6 +78,18 @@ Key frontend patterns used:
 - Functional route guards and HTTP interceptors
 - Lazy-loaded routes via `loadComponent`
 - Angular 17+ control flow syntax (`@if`, `@for`, `@else`) — no structural directives
+
+---
+
+## Design Decisions
+
+#### Service/Repository pattern over CQRS
+CQRS was intentionally not introduced because the domain and use cases are small and straightforward. Also, not being able to use Mediator would have led to a more complex and less intuitive design for this scope.  
+A service/repository approach keeps the design explicit, testable, and easier to review under interview scope without unnecessary ceremony.
+
+#### SQLite as the database
+SQLite was chosen for reviewer experience: zero external database setup, file-based storage, and quick local startup.  
+It keeps the project easy to run and evaluate.
 
 ---
 
@@ -155,7 +187,7 @@ dotnet test
 
 ---
 
-## AI Usage and Reflection
+## AI Usage
 
 Both Claude and OpenAI Codex (integrated in VS Code) were used throughout this project as development accelerators — for scaffolding structure, drafting initial implementations, and cross-checking patterns against Angular and .NET conventions.
 
