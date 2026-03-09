@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
 import { Login } from './features/auth/login/login';
+import { TaskItemList } from './features/task-items/task-item-list/task-item-list';
+import { Register } from './features/auth/register/register';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'task-items' },
   {
     path: 'task-items',
-    loadComponent: () =>
-      import('./features/task-items/task-item-list/task-item-list').then((m) => m.TaskItemList)
+    component: TaskItemList,
+    title: 'Task Items'
   },
   {
     path: 'login',
@@ -15,8 +17,8 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () =>
-      import('./features/auth/register/register').then((m) => m.Register)
+    component: Register,
+    title: 'Register'
   },
   { path: '**', redirectTo: 'task-items' }
 ];
