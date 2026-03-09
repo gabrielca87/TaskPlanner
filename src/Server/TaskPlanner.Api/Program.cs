@@ -14,6 +14,17 @@ public partial class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("frontend", policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
         builder.Services.AddAutoMapper(typeof(TaskItemProfile).Assembly);
@@ -32,6 +43,9 @@ public partial class Program
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();
+
+        app.UseCors("frontend");
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
