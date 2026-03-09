@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ApiErrorResponse } from '../../../shared/contracts/api.error';
@@ -8,7 +8,6 @@ import { LoginRequest } from '../auth.contracts';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html'
 })
@@ -22,11 +21,11 @@ export class Login {
     password: ['', [Validators.required, Validators.maxLength(1000)]]
   });
 
-  isSubmitting = false;
-  requestError = '';
+  readonly isSubmitting = signal(false);
+  readonly requestError = signal('');
 
   submit(): void {
-    this.requestError = '';
+    this.requestError.set('');
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -34,16 +33,16 @@ export class Login {
     }
 
     const request: LoginRequest = this.form.getRawValue();
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.authApi.login(request).subscribe({
       next: () => {
-        this.isSubmitting = false;
+        this.isSubmitting.set(false);
         void this.router.navigate(['/task-items']);
       },
       error: (error: HttpErrorResponse) => {
-        this.isSubmitting = false;
-        this.requestError = this.mapError(error);
+        this.isSubmitting.set(false);
+        this.requestError.set(this.mapError(error));
       }
     });
   }

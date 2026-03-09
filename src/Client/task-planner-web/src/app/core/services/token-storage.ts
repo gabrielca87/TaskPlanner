@@ -18,7 +18,4 @@ export class TokenStorage {
     localStorage.removeItem(this.accessTokenKey);
   }
 
-  hasToken(): boolean {
-    return this.get() !== null;
-  }
 }
