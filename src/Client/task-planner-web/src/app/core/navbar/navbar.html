@@ -4,6 +4,10 @@
 
     <nav class="flex flex-wrap gap-2 text-sm font-medium">
       @if (isAuthenticated()) {
+        <span class="px-2 py-2 text-sm text-slate-600">
+          {{ user()?.displayName }}
+        </span>
+
         <a
           routerLink="/task-items"
           routerLinkActive="bg-slate-900 text-white"

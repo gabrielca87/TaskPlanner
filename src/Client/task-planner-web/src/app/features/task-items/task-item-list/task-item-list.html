@@ -1,4 +1,143 @@
-<section class="mx-auto mt-10 w-full max-w-3xl rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-  <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Task Items</h1>
-  <p class="mt-2 text-sm text-slate-600">Task list data and actions will be implemented in upcoming commits.</p>
+<section class="mx-auto mt-8 w-full max-w-5xl space-y-6 px-4 pb-8">
+  <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Task Items</h1>
+      <p class="mt-1 text-sm text-slate-600">Create, update, and delete your tasks.</p>
+    </div>
+    <button
+      type="button"
+      (click)="loadTasks()"
+      [disabled]="isLoading()"
+      class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      Refresh
+    </button>
+  </header>
+
+  <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 class="text-lg font-semibold text-slate-900">
+      @if (formMode() === 'edit') {
+        Edit Task
+      } @else {
+        New Task
+      }
+    </h2>
+
+    <form class="mt-4 space-y-4" [formGroup]="form" (ngSubmit)="submit()">
+      <div>
+        <label class="mb-1 block text-sm font-medium text-slate-700" for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+        />
+        @if (form.controls.title.touched && form.controls.title.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600">Title is required.</p>
+        }
+        @if (form.controls.title.touched && form.controls.title.hasError('maxlength')) {
+          <p class="mt-1 text-xs text-red-600">Title cannot exceed 250 characters.</p>
+        }
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm font-medium text-slate-700" for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+        ></textarea>
+        @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+          <p class="mt-1 text-xs text-red-600">Description cannot exceed 1000 characters.</p>
+        }
+      </div>
+
+      @if (requestError()) {
+        <p class="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {{ requestError() }}
+        </p>
+      }
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="submit"
+          [disabled]="isSubmitting()"
+          class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          @if (isSubmitting()) {
+            Saving...
+          } @else if (formMode() === 'edit') {
+            Save Changes
+          } @else {
+            Create Task
+          }
+        </button>
+
+        @if (formMode() === 'edit') {
+          <button
+            type="button"
+            (click)="cancelEdit()"
+            [disabled]="isSubmitting()"
+            class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Cancel
+          </button>
+        }
+      </div>
+    </form>
+  </section>
+
+  @if (isLoading()) {
+    <section class="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-600 shadow-sm">
+      Loading task items...
+    </section>
+  } @else if (listError()) {
+    <section class="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-700">
+      {{ listError() }}
+    </section>
+  } @else if (isEmpty()) {
+    <section class="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-600 shadow-sm">
+      No task items yet. Create your first one above.
+    </section>
+  } @else {
+    <section class="space-y-3">
+      @for (task of tasks(); track task.id) {
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div class="space-y-2">
+              <h3 class="text-lg font-semibold text-slate-900">{{ task.title }}</h3>
+              <p class="text-sm text-slate-600">
+                @if (task.description) {
+                  {{ task.description }}
+                } @else {
+                  No description.
+                }
+              </p>
+              <p class="text-xs text-slate-500">
+                Updated {{ task.updatedAtUtc | date: 'medium' }}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                (click)="startEdit(task)"
+                class="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                (click)="deleteTask(task)"
+                class="rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  }
 </section>
