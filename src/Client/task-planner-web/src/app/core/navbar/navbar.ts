@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-
-type NavLink = {
-  label: string;
-  path: string;
-};
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthSession } from '../services/auth-session';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html'
 })
 export class Navbar {
-  readonly links: readonly NavLink[] = [
-    { label: 'Tasks', path: '/task-items' },
+  private readonly authSession = inject(AuthSession);
+  private readonly router = inject(Router);
+
+  readonly isAuthenticated = this.authSession.isAuthenticated;
+  readonly guestLinks = [
     { label: 'Login', path: '/login' },
     { label: 'Register', path: '/register' }
   ];
+
+  logout(): void {
+    this.authSession.clear();
+    void this.router.navigate(['/login']);
+  }
 }
