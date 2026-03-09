@@ -11,6 +11,7 @@ export class Navbar {
   private readonly authSession = inject(AuthSession);
   private readonly router = inject(Router);
 
+  readonly user = this.authSession.user;
   readonly isAuthenticated = this.authSession.isAuthenticated;
   readonly guestLinks = [
     { label: 'Login', path: '/login' },

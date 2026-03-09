@@ -30,6 +30,7 @@ public sealed class TaskItemsController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [ActionName(nameof(GetByIdAsync))]
     [ProducesResponseType<TaskItemDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

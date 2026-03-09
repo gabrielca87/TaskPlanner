@@ -17,7 +17,7 @@ export class AuthSession {
   private readonly userState = signal<SessionUser | null>(this.readUserFromStorage());
 
   readonly user = this.userState.asReadonly();
-  readonly isAuthenticated = computed(() => this.userState() !== null);
+  readonly isAuthenticated = computed(() => this.userState() !== null && this.tokenStorage.hasToken());
 
   open(response: AuthResponse): void {
     this.tokenStorage.set(response.accessToken);
@@ -51,11 +51,13 @@ export class AuthSession {
     try {
       const parsedUser = JSON.parse(serializedUser) as SessionUser;
       if (!parsedUser.userId || !parsedUser.email || !parsedUser.displayName) {
+        localStorage.removeItem(this.userStorageKey);
         return null;
       }
 
       return parsedUser;
     } catch {
+      localStorage.removeItem(this.userStorageKey);
       return null;
     }
   }
